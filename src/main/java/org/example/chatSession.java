@@ -24,7 +24,16 @@ public class chatSession {
     public static ObjectOutputStream getStream(String name){
         return clients.get(name);
     }
-
+    public static void broadCast(String message, String name) throws IOException {
+        for (HashMap.Entry<String, ObjectOutputStream> entry : chatSession.getClients().entrySet()) {
+            String clientName = entry.getKey();
+            ObjectOutputStream clientStream = entry.getValue();
+            if (!Objects.equals(clientName, name)){
+                clientStream.writeObject(message);
+                clientStream.flush();
+            }
+        }
+    }
     public static void previousTexts() throws IOException {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("message_history.txt"));

@@ -38,8 +38,8 @@ class Handler implements Runnable{
         while (true){
             try {
                 String obj = (String) ois.readObject();
-                String[] info = obj.split("\\$"); //sender,receiver,msg
-
+                String[] info = obj.split("\\$");
+                //info[0] = sender, info[1] = receiver, info[2] = message
                 if(info[1].equals("list")){
                     String list = chatSession.list();
                     ObjectOutputStream stream = chatSession.getStream(name);
@@ -47,7 +47,6 @@ class Handler implements Runnable{
                 }
                 else {
                     String msg = info[0] + " : " + info[2];
-                    System.out.println(info[0] + " says " + info[2] + " to " + info[1]);
                     ObjectOutputStream stream = chatSession.getStream(info[1]);
                     stream.writeObject(msg);
                 }

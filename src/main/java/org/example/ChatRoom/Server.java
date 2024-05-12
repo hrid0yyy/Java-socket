@@ -45,14 +45,7 @@ class ServerHelper implements Runnable{
                 Object obj = ois.readObject();
                 String msg = name + " : " +  obj;
                 chatSession.saveMessageToFile(msg);
-                for (HashMap.Entry<String, ObjectOutputStream> entry : chatSession.getClients().entrySet()) {
-                    String clientName = entry.getKey();
-                    ObjectOutputStream clientStream = entry.getValue();
-                    if (!Objects.equals(clientName, name)){
-                            clientStream.writeObject(msg);
-                            clientStream.flush();
-                    }
-                }
+                chatSession.broadCast(msg,name);
 
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
